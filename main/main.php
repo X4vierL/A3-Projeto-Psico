@@ -9,7 +9,7 @@
     <h1>Main</h1>
 
     <div class="link-container">
-        <a href="../pacientes/pacientes.php" class="link-button">Pacientes</a><br>
+        <a href="../pacientes/pacientes_lst.php" class="link-button">Pacientes</a><br>
         <a href="../prontuario/prontuario.php" class="link-button">Prontuário</a>
     </div>
 
