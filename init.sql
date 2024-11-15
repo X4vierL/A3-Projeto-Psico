@@ -1,8 +1,16 @@
 CREATE DATABASE IF NOT EXISTS A3_Psico;
 USE A3_Psico;
 
+CREATE TABLE usuario (
+    id_usuario INT(4) AUTO_INCREMENT PRIMARY KEY,
+    nome varchar (255),
+    login VARCHAR(100) UNIQUE,
+    senha VARCHAR(15),
+    nivel VARCHAR(4)
+);
+
 CREATE TABLE paciente (
-    id_paciente INT(4) PRIMARY KEY,
+    id_paciente INT(4) AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     genero VARCHAR(5),
     data_nascimento DATE,
@@ -20,15 +28,22 @@ CREATE TABLE paciente (
 );
 
 CREATE TABLE prontuario (
-    id_prontuario INT PRIMARY KEY,
-    data_inicio_atendimentos DATE,
-    id_paciente INT(4),
-    historico_familiar VARCHAR(255),
-    historico_social VARCHAR(255),
-    consideracoes_finais VARCHAR(255),
-    observacoes VARCHAR(255),
-    FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente)
+    id_prontuario INT AUTO_INCREMENT PRIMARY KEY,
+    data_abertura DATE,
+    nome_completo VARCHAR(100),
+    data_nascimento DATE,
+    genero ENUM('M', 'F', 'Outro'),
+    endereco VARCHAR(255),
+    telefone VARCHAR(20),
+    email VARCHAR(100),
+    contato_emergencia VARCHAR(255),
+    escolaridade VARCHAR(50),
+    ocupacao VARCHAR(100),
+    necessidade_especial VARCHAR(50),
+    estagiario_responsavel VARCHAR(100),
+    orientador_responsavel VARCHAR(100)
 );
+
 
 CREATE TABLE sessao (
     id_sessao INT(4) PRIMARY KEY,
@@ -40,9 +55,4 @@ CREATE TABLE sessao (
     FOREIGN KEY (id_prontuario) REFERENCES prontuario(id_prontuario)
 );
 
-CREATE TABLE usuario (
-    id_usuario INT(4) PRIMARY KEY,
-    login VARCHAR(100) UNIQUE,
-    senha VARCHAR(15),
-    nivel_acesso VARCHAR(4)
-);
+
