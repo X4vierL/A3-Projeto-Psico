@@ -15,16 +15,29 @@
     <div class="content-list">
         <h1 id="title">Pacientes</h1>
         <ul class="paciente-lista">
-
             <?php
-            include('C:/xampp/htdocs/A3-Projeto-Psico/config.php');
+            // Verifica se o arquivo config.php existe e o inclui
+            $configPath = __DIR__ . '/../config.php'; // Caminho ajustado
+            if (file_exists($configPath)) {
+                include($configPath);
+            } else {
+                die('<p>Erro: O arquivo config.php não foi encontrado.</p>');
+            }
 
-            $query = "SELECT p.id_paciente, p.nome, COUNT(s.id_sessao) AS sessoes
-                    FROM paciente p
-                    LEFT JOIN prontuario pr ON pr.id_paciente = p.id_paciente
-                    LEFT JOIN sessao s ON s.id_prontuario = pr.id_prontuario
-                    GROUP BY p.id_paciente";
-                    
+            // Verifica se a conexão foi bem-sucedida
+            if (!isset($con) || !$con) {
+                die('<p>Erro: Não foi possível conectar ao banco de dados.</p>');
+            }
+
+            // Consulta para buscar pacientes e suas informações
+            $query = "
+                SELECT p.id_paciente, p.nome, COUNT(s.id_sessao) AS sessoes
+                FROM paciente p
+                LEFT JOIN prontuario pr ON pr.id_paciente = p.id_paciente
+                LEFT JOIN sessao s ON s.id_prontuario = pr.id_prontuario
+                GROUP BY p.id_paciente
+            ";
+
             $result = mysqli_query($con, $query);
 
             if ($result && mysqli_num_rows($result) > 0) {
@@ -38,20 +51,14 @@
             } else {
                 echo '<li class="paciente-item">Nenhum paciente encontrado.</li>';
             }
+
+            // Encerra a conexão com o banco de dados
             mysqli_close($con);
             ?>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
-            <li class="paciente-item">Nenhum paciente encontrado.</li>
         </ul>
         <button onclick="window.location.href='../paciente/paciente.php'" class="button-cadastrar">Cadastrar Novo Paciente</button>
     </div>
+
 </body>
 </html>
+

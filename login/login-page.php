@@ -5,59 +5,65 @@
 include ('C:\xampp\htdocs\A3-Projeto-Psico\config.php');
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = trim($_POST['user'] ?? '');
-    $password = md5(trim($_POST['password'] ?? ''));
+    $password = trim($_POST['password'] ?? '');
+    $login = trim($_POST['login'] ?? '');
+    $button = $_POST['button'] ?? '';
 
-    if (@$_POST["button"] == "Cadastrar") {
-        $login = trim($_POST['login'] ?? '');
-
+    if ($button === 'Cadastrar') {
+        // Verifica campos obrigatórios
         if (empty($user) || empty($login) || empty($password)) {
             echo "<script>alert('Todos os campos são obrigatórios!');</script>";
         } else {
-            if (empty($_REQUEST["id_usuario"])) {
-                $inserir = "INSERT INTO usuario (nome, login, senha, nivel) VALUES ('$user', '$login', '$password', 'USER')";
-                $result_inserir = mysqli_query($con, $inserir);
+            // Verifica se o login já existe
+            $check_user_query = "SELECT * FROM usuario WHERE login = ?";
+            $stmt = $con->prepare($check_user_query);
+            $stmt->bind_param("s", $login);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                if ($result_inserir) {
+            if ($result->num_rows > 0) {
+                echo "<script>alert('Este login já está em uso!');</script>";
+            } else {
+                // Insere o novo usuário
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $insert_query = "INSERT INTO usuario (nome, login, senha, nivel) VALUES (?, ?, ?, 'USER')";
+                $stmt = $con->prepare($insert_query);
+                $stmt->bind_param("sss", $user, $login, $hashed_password);
+
+                if ($stmt->execute()) {
                     echo "<script>alert('Cadastro realizado com sucesso!');</script>";
                 } else {
                     echo "<script>alert('Erro ao cadastrar o usuário!');</script>";
                 }
-            } else {
-                $atualizar = "UPDATE usuario SET 
-                    nome = '$user',
-                    login = '$login',
-                    senha = '$password'
-                    WHERE id_usuario = '{$_REQUEST['id_usuario']}'";
-                $result_atualizar = mysqli_query($con, $atualizar);
-
-                if ($result_atualizar) {
-                    echo "<script>alert('Registro atualizado com sucesso!');</script>";
-                } else {
-                    echo "<script>alert('Erro ao atualizar o registro!');</script>";
-                }
             }
         }
-    }
-
-    if (isset($_POST["button"]) && $_POST["button"] == "Entrar") {
-        $login = trim($_POST['user'] ?? '');
-        $password = md5(trim($_POST['password'] ?? ''));
-
-        if (empty($login) || empty($password)) {
+    } elseif ($button === 'Entrar') {
+        // Verifica campos obrigatórios
+        if (empty($user) || empty($password)) {
             echo "<script>alert('Usuário e senha são obrigatórios!');</script>";
         } else {
-            $login_query = "SELECT * FROM usuario WHERE login = '$login' AND senha = '$password'";
-            $result_login = mysqli_query($con, $login_query);
+            // Verifica login e senha
+            $login_query = "SELECT * FROM usuario WHERE login = ?";
+            $stmt = $con->prepare($login_query);
+            $stmt->bind_param("s", $user);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            if ($result_login && mysqli_num_rows($result_login) > 0) {
-                $coluna = mysqli_fetch_array($result_login);
-                $_SESSION["id_usuario"] = $coluna["id_usuario"];
-                $_SESSION["nome_usuario"] = $coluna["nome"];
-                $_SESSION["nivel_usuario"] = $coluna["nivel"];
-                header("Location: http://localhost/A3-Projeto-Psico/main/main.php");
-                exit;
+            if ($result->num_rows > 0) {
+                $coluna = $result->fetch_assoc();
+
+                if (password_verify($password, $coluna['senha'])) {
+                    // Login bem-sucedido
+                    $_SESSION["id_usuario"] = $coluna["id_usuario"];
+                    $_SESSION["nome_usuario"] = $coluna["nome"];
+                    $_SESSION["nivel_usuario"] = $coluna["nivel"];
+                    header("Location: http://localhost/A3-Projeto-Psico/main/main.php");
+                    exit;
+                } else {
+                    echo "<script>alert('Usuário ou senha incorretos!');</script>";
+                }
             } else {
                 echo "<script>alert('Usuário ou senha incorretos!');</script>";
             }
@@ -69,9 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>A3 - TravelBnB</title>
@@ -84,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h1>Bem Vindo!</h1>
                     <p>Por gentileza, entre em sua conta.</p>
                 </div>
-                <form action="#" name="usuario" method="POST" class="form-login">
+                <form action="#" method="POST" class="form-login">
                     <label for="user" class="input-account">
                         <input type="text" name="user" id="user" placeholder="Usuário">
                         <i class="fa-solid fa-user"></i>
@@ -105,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h1>Bem Vindo!</h1>
                     <p>Preencha os dados para criar sua conta nova.</p>
                 </div>
-                <form action="#" name="usuario" method="POST" class="form-register">
+                <form action="#" method="POST" class="form-register">
                     <label for="user" class="input-account">
                         <input type="text" name="user" id="user" placeholder="Usuário">
                         <i class="fa-solid fa-user"></i>
@@ -130,3 +133,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="assets/js/login.js"></script>
 </body>
 </html>
+
