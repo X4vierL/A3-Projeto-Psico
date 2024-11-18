@@ -16,20 +16,16 @@
         <h1 id="title">Pacientes</h1>
         <ul class="paciente-lista">
             <?php
-            // Verifica se o arquivo config.php existe e o inclui
-            $configPath = __DIR__ . '/../config.php'; // Caminho ajustado
+            $configPath = __DIR__ . '/../config.php';
             if (file_exists($configPath)) {
                 include($configPath);
             } else {
                 die('<p>Erro: O arquivo config.php não foi encontrado.</p>');
             }
 
-            // Verifica se a conexão foi bem-sucedida
             if (!isset($con) || !$con) {
                 die('<p>Erro: Não foi possível conectar ao banco de dados.</p>');
             }
-
-            // Consulta para buscar pacientes e suas informações
             $query = "
                 SELECT p.id_paciente, p.nome, COUNT(s.id_sessao) AS sessoes
                 FROM paciente p
@@ -52,7 +48,6 @@
                 echo '<li class="paciente-item">Nenhum paciente encontrado.</li>';
             }
 
-            // Encerra a conexão com o banco de dados
             mysqli_close($con);
             ?>
         </ul>

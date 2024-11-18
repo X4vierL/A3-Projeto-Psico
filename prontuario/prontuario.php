@@ -94,7 +94,6 @@
     </div>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Corrigir caminho para o arquivo config.php
         $configPath = realpath('../config.php');
         if ($configPath && file_exists($configPath)) {
             include($configPath);
@@ -102,12 +101,10 @@
             die("Erro: Não foi possível incluir o arquivo config.php.");
         }
 
-        // Verificar conexão com o banco
         if (!isset($con)) {
             die("Erro: A conexão com o banco de dados não foi inicializada.");
         }
 
-        // Obter os valores do formulário
         $data_abertura = $_POST['data_abertura'];
         $nome_completo = $_POST['nome_completo'];
         $data_nascimento = $_POST['data_nascimento'];
@@ -122,7 +119,6 @@
         $estagiario_responsavel = $_POST['estagiario_responsavel'];
         $orientador_responsavel = $_POST['orientador_responsavel'];
 
-        // Inserir dados no banco
         $query = "INSERT INTO prontuario (
                     data_abertura, nome_completo, data_nascimento, genero, endereco,
                     telefone, email, contato_emergencia, escolaridade, ocupacao,

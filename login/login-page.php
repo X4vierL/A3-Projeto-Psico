@@ -12,11 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $button = $_POST['button'] ?? '';
 
     if ($button === 'Cadastrar') {
-        // Verifica campos obrigatórios
+
         if (empty($user) || empty($login) || empty($password)) {
             echo "<script>alert('Todos os campos são obrigatórios!');</script>";
         } else {
-            // Verifica se o login já existe
             $check_user_query = "SELECT * FROM usuario WHERE login = ?";
             $stmt = $con->prepare($check_user_query);
             $stmt->bind_param("s", $login);
@@ -26,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result->num_rows > 0) {
                 echo "<script>alert('Este login já está em uso!');</script>";
             } else {
-                // Insere o novo usuário
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $insert_query = "INSERT INTO usuario (nome, login, senha, nivel) VALUES (?, ?, ?, 'USER')";
                 $stmt = $con->prepare($insert_query);
@@ -40,11 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($button === 'Entrar') {
-        // Verifica campos obrigatórios
         if (empty($user) || empty($password)) {
             echo "<script>alert('Usuário e senha são obrigatórios!');</script>";
         } else {
-            // Verifica login e senha
             $login_query = "SELECT * FROM usuario WHERE login = ?";
             $stmt = $con->prepare($login_query);
             $stmt->bind_param("s", $user);
@@ -55,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $coluna = $result->fetch_assoc();
 
                 if (password_verify($password, $coluna['senha'])) {
-                    // Login bem-sucedido
                     $_SESSION["id_usuario"] = $coluna["id_usuario"];
                     $_SESSION["nome_usuario"] = $coluna["nome"];
                     $_SESSION["nivel_usuario"] = $coluna["nivel"];
