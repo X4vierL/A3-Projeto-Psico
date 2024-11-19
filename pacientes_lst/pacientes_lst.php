@@ -15,24 +15,22 @@
     <div class="content-list">
         <h1 id="title">Pacientes</h1>
         <ul class="paciente-lista">
-            <?php
-            $configPath = __DIR__ . '/../config.php';
-            if (file_exists($configPath)) {
-                include($configPath);
-            } else {
-                die('<p>Erro: O arquivo config.php não foi encontrado.</p>');
-            }
-
-            if (!isset($con) || !$con) {
-                die('<p>Erro: Não foi possível conectar ao banco de dados.</p>');
-            }
+<?php
+            include('../config.php');
+            include('../verify.php');
             $query = "
-                SELECT p.id_paciente, p.nome, COUNT(s.id_sessao) AS sessoes
-                FROM paciente p
-                LEFT JOIN prontuario pr ON pr.id_paciente = p.id_paciente
-                LEFT JOIN sessao s ON s.id_prontuario = pr.id_prontuario
-                GROUP BY p.id_paciente
-            ";
+                SELECT 
+                    p.id_paciente, 
+                    p.nome, 
+                    p.contato, 
+                    COUNT(s.id_sessao) AS total_sessoes
+                FROM 
+                    paciente p
+                LEFT JOIN 
+                    sessao s ON s.id_paciente = p.id_paciente
+                GROUP BY 
+                    p.id_paciente
+                ";
 
             $result = mysqli_query($con, $query);
 
@@ -40,8 +38,8 @@
                 while ($paciente = mysqli_fetch_assoc($result)) {
                     echo '<li class="paciente-item">';
                     echo '<span>' . htmlspecialchars($paciente['nome']) . '</span>';
-                    echo '<span>Sessões: ' . htmlspecialchars($paciente['sessoes']) . '</span>';
-                    echo '<a href="../prontuario/prontuario.php?id=' . urlencode($paciente['id_paciente']) . '" class="paciente-link">Ver Prontuário</a>';
+                    echo '<a href="../sessoes_lst/sessoes_lst.php?id_paciente=' . urlencode($paciente['id_paciente']) . '" class="paciente-link"><span>Sessões: ' . htmlspecialchars($paciente['total_sessoes']) . '</span></a>';
+                    echo '<a href="../prontuario/prontuario.php?id_paciente=' . urlencode($paciente['id_paciente']) . '" class="paciente-link">Ver Prontuário</a>';
                     echo '</li>';
                 }
             } else {
@@ -56,4 +54,3 @@
 
 </body>
 </html>
-

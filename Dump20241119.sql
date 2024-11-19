@@ -75,7 +75,7 @@ CREATE TABLE `prontuario` (
   CONSTRAINT `fk_id_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`),
   CONSTRAINT `fk_prontuario_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `id_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,6 +84,7 @@ CREATE TABLE `prontuario` (
 
 LOCK TABLES `prontuario` WRITE;
 /*!40000 ALTER TABLE `prontuario` DISABLE KEYS */;
+INSERT INTO `prontuario` VALUES (1,'2024-11-19',11,'2024-12-20','Todo mundo fodido.','Todo mundo esquisito.','É maluca.','1/2 Dramim p viajar.');
 /*!40000 ALTER TABLE `prontuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,16 +96,16 @@ DROP TABLE IF EXISTS `sessao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessao` (
-  `id_sessao` int(4) NOT NULL,
-  `id_prontuario` int(11) DEFAULT NULL,
+  `id_sessao` int(11) NOT NULL AUTO_INCREMENT,
   `data_sessao` date DEFAULT NULL,
   `numero_sessao` int(3) DEFAULT NULL,
   `descricao_atividades` varchar(255) DEFAULT NULL,
   `observacao` varchar(255) DEFAULT NULL,
+  `id_paciente` int(11) NOT NULL,
   PRIMARY KEY (`id_sessao`),
-  KEY `id_prontuario` (`id_prontuario`),
-  CONSTRAINT `sessao_ibfk_1` FOREIGN KEY (`id_prontuario`) REFERENCES `prontuario` (`id_prontuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_sessao_paciente` (`id_paciente`),
+  CONSTRAINT `fk_sessao_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,6 +114,7 @@ CREATE TABLE `sessao` (
 
 LOCK TABLES `sessao` WRITE;
 /*!40000 ALTER TABLE `sessao` DISABLE KEYS */;
+INSERT INTO `sessao` VALUES (1,'2024-11-20',1,'Estimulo de clitoris','Não consegue limpa a bunda.',11),(2,'2024-11-21',2,'bla bka','ble blke',11);
 /*!40000 ALTER TABLE `sessao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,4 +155,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-18 12:26:52
+-- Dump completed on 2024-11-19 12:27:58

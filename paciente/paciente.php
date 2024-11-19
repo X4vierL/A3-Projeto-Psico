@@ -13,7 +13,8 @@
 <body>
 
 <?php
-include('C:/xampp/htdocs/A3-Projeto-Psico/config.php');
+include('../config.php');
+include('../verify.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Captura os valores do formulário
