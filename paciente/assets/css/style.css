@@ -1,9 +1,9 @@
-*{
+* {
   margin: 0;
   padding: 0;
   text-decoration: none;
   box-sizing: border-box;
-  color:  #0ea4b2;
+  color: #0ea4b2;
   /* background-color: black; */
   font-family: Poppins;
 }
@@ -17,7 +17,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.content-box{
+.content-box {
   width: 700px;
   /* background-color: red; */
   display: flex;
@@ -26,31 +26,31 @@ body {
   justify-content: center;
   gap: 2rem;
 }
-#title{
+#title {
   text-align: center;
 }
-.form{
-  background-color: rgba(255, 255, 255,0.8);
+.form {
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
   box-shadow: 0 0 1rem 0 black;
   border-radius: 1rem;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
-.content-input{
+.content-input {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   gap: 1rem;
 }
-.couple{
+.couple {
   display: flex;
   justify-content: space-between;
 }
-.send-data{
+.send-data {
   margin-top: 2rem;
   /* padding: 1rem; */
 }
-.send-data input{
+.send-data input {
   background-color: #0ea4b2;
   color: white;
   padding: 1rem;
@@ -59,6 +59,23 @@ body {
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
-.send-data input:hover{
+.send-data input:hover {
   transform: scale(1.02);
+}
+
+#suggestions {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+}
+#suggestions div {
+  padding: 8px;
+  cursor: pointer;
+}
+#suggestions div:hover {
+  background-color: #f0f0f0;
 }

@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (mysqli_stmt_execute($stmt_update)) {
             echo "Prontuário atualizado com sucesso!";
+            echo "<a href='../main/main.php'>Voltar a tela principal</a>";
         } else {
             echo "Erro ao atualizar prontuário: " . mysqli_error($con);
         }
@@ -43,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (mysqli_stmt_execute($stmt_insert)) {
             echo "Prontuário salvo com sucesso!";
+            echo "<a href='../main/main.php'>Voltar a tela principal</a>";
+
         } else {
             echo "Erro ao salvar prontuário: " . mysqli_error($con);
         }

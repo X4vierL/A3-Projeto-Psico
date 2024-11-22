@@ -8,6 +8,13 @@ if (!isset($_GET['id_paciente']) || empty($_GET['id_paciente'])) {
 
 $id_paciente = intval($_GET['id_paciente']);
 
+$id_paciente = intval($_GET['id_paciente']);
+$query_nome = "SELECT nome FROM paciente WHERE id_paciente = ?";
+$stmt_nome = mysqli_prepare($con, $query_nome);
+mysqli_stmt_bind_param($stmt_nome, 'i', $id_paciente);
+mysqli_stmt_execute($stmt_nome);
+$result_nome = mysqli_stmt_get_result($stmt_nome);
+
 $query_sessoes = "SELECT * FROM sessao WHERE id_paciente = ?";
 $stmt_sessoes = mysqli_prepare($con, $query_sessoes);
 mysqli_stmt_bind_param($stmt_sessoes, 'i', $id_paciente);
@@ -31,7 +38,11 @@ mysqli_close($con);
 </head>
 <body>
     <div class="content-box">
-        <h2>Sessões do Paciente</h2>
+        <h2>Sessões do Paciente <?php if ($result_nome && $nome_paciente = mysqli_fetch_assoc($result_nome)) {
+    echo $nome_paciente['nome'];
+} else {
+    echo "Paciente não encontrado.";
+}?></h2>
         <?php if (!empty($sessoes)): ?>
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>

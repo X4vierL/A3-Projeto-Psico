@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Paciente</title>
+    <script>
+        function fetchSuggestions(inputId, suggestionDivId, nivel) {
+            const input = document.getElementById(inputId).value;
+            if (input.length < 1) {
+                document.getElementById(suggestionDivId).innerHTML = '';
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `get_suggestions.php?query=${encodeURIComponent(input)}&nivel=${nivel}`, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    document.getElementById(suggestionDivId).innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+
+        function selectSuggestion(inputId, value, suggestionDivId) {
+            document.getElementById(inputId).value = value;
+            document.getElementById(suggestionDivId).innerHTML = '';
+        }
+
+    </script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,9 +39,8 @@
 <?php
 include('../config.php');
 include('../verify.php');
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Captura os valores do formulário
+
     $nome = trim($_POST['nome']);
     $genero = trim($_POST['genero']);
     $data_nascimento = trim($_POST['data_nascimento']);
@@ -28,28 +51,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $escolaridade = trim($_POST['escolaridade']);
     $ocupacao = trim($_POST['ocupacao']);
     $necessidade_especial = trim($_POST['necessidade_especial']);
-    $estagiario_responsavel = (int) $_POST['estagiario_responsavel'];
-    $orientador_responsavel = (int) $_POST['orientador_responsavel'];
+    $estagiario_nome = trim($_POST['estagiario_responsavel']);
+    $orientador_nome = trim($_POST['orientador_responsavel']);
 
-    // Validação dos IDs de estagiário e orientador
-    $estagiario_exists_query = "SELECT id_usuario FROM usuario WHERE id_usuario = ?";
-    $stmt1 = $con->prepare($estagiario_exists_query);
-    $stmt1->bind_param("i", $estagiario_responsavel);
+
+    $estagiario_query = "SELECT id_usuario FROM usuario WHERE nome = ? AND nivel = 'USER'";
+    $stmt1 = $con->prepare($estagiario_query);
+    $stmt1->bind_param("s", $estagiario_nome);
     $stmt1->execute();
-    $estagiario_exists = $stmt1->get_result()->num_rows > 0;
+    $estagiario_result = $stmt1->get_result();
+    $estagiario = $estagiario_result->fetch_assoc();
 
-    $orientador_exists_query = "SELECT id_usuario FROM usuario WHERE id_usuario = ?";
-    $stmt2 = $con->prepare($orientador_exists_query);
-    $stmt2->bind_param("i", $orientador_responsavel);
+    $orientador_query = "SELECT id_usuario FROM usuario WHERE nome = ? AND nivel = 'ADM'";
+    $stmt2 = $con->prepare($orientador_query);
+    $stmt2->bind_param("s", $orientador_nome);
     $stmt2->execute();
-    $orientador_exists = $stmt2->get_result()->num_rows > 0;
+    $orientador_result = $stmt2->get_result();
+    $orientador = $orientador_result->fetch_assoc();
 
-    if (!$estagiario_exists) {
-        echo "<script>alert('O ID do estagiário não existe no sistema. Verifique e tente novamente.');</script>";
-    } elseif (!$orientador_exists) {
-        echo "<script>alert('O ID do orientador não existe no sistema. Verifique e tente novamente.');</script>";
+    if (!$estagiario) {
+        echo "<script>alert('O nome do estagiário não é válido. Verifique e tente novamente.');</script>";
+    } elseif (!$orientador) {
+        echo "<script>alert('O nome do orientador não é válido. Verifique e tente novamente.');</script>";
     } else {
-        // Inserção no banco de dados
+        $estagiario_id = $estagiario['id_usuario'];
+        $orientador_id = $orientador['id_usuario'];
+
         $insert_query = "
             INSERT INTO paciente (
                 nome, genero, data_nascimento, contato, contato_emergencia, 
@@ -62,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "ssssssssssii",
             $nome, $genero, $data_nascimento, $contato, $contato_emergencia,
             $email, $endereco, $escolaridade, $ocupacao, $necessidade_especial,
-            $estagiario_responsavel, $orientador_responsavel
+            $estagiario_id, $orientador_id
         );
 
         if ($stmt3->execute()) {
@@ -78,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <h1 id="title">Cadastro de Paciente</h1>
     <form action="#" method="POST" class="form">
         <div class="content-input">
-            <!-- Dados do formulário -->
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
 
@@ -109,11 +135,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="necessidade_especial">Necessidade Especial:</label>
             <input type="text" id="necessidade_especial" name="necessidade_especial" maxlength="9">
 
-            <label for="estagiario_responsavel">ID do Estagiário:</label>
-            <input type="number" id="estagiario_responsavel" name="estagiario_responsavel" required>
+            <label for="estagiario_responsavel">Nome do estagiário responsável:</label>
+            <input 
+                type="text" 
+                id="estagiario_responsavel" 
+                name="estagiario_responsavel" 
+                onkeyup="fetchSuggestions('estagiario_responsavel', 'suggestions_estagiario', 'USER')" 
+                required>
+            <div id="suggestions_estagiario"></div>
 
-            <label for="orientador_responsavel">ID do Orientador:</label>
-            <input type="number" id="orientador_responsavel" name="orientador_responsavel" required>
+            <label for="orientador_responsavel">Nome do orientador responsável:</label>
+            <input 
+                type="text" 
+                id="orientador_responsavel" 
+                name="orientador_responsavel" 
+                onkeyup="fetchSuggestions('orientador_responsavel', 'suggestions_orientador', 'ADM')" 
+                required>
+            <div id="suggestions_orientador"></div>
+
+
         </div>
         <div class="send-data">
             <input type="submit" value="Cadastrar Paciente">
