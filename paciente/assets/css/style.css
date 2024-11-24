@@ -45,6 +45,7 @@ body {
 .couple {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
 .send-data {
   margin-top: 2rem;
@@ -79,3 +80,4 @@ body {
 #suggestions div:hover {
   background-color: #f0f0f0;
 }
+

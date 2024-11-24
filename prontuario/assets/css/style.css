@@ -42,9 +42,28 @@
     /* align-items: center; */
     gap: 1rem;
   }
+  .one{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+  }
+  .one label{
+    width: 200px;
+  }
+  .one textarea{
+    width: 100%;
+  }
   .couple{
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
+  }
+  .couple:first-child label{
+    /* margin-right: 10rem; */
+  }
+  .first label{
+    width: auto;
   }
   .send-data{
     margin-top: 2rem;

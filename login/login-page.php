@@ -83,9 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p>Por gentileza, entre em sua conta.</p>
                 </div>
                 <form action="#" method="POST" class="form-login">
-                    <label for="user" class="input-account">
-                        <input type="text" name="user" id="user" placeholder="Usuário">
-                        <i class="fa-solid fa-user"></i>
+                <label for="login" class="input-account">
+                        <input type="email" name="login" id="login" placeholder="Email">
+                        <i class="fa-solid fa-envelope"></i>
                     </label>
                     <label for="password" class="input-account">
                         <input type="password" name="password" id="password" placeholder="Senha">
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <i class="fa-solid fa-user"></i>
                     </label>
                     <label for="login" class="input-account">
-                        <input type="text" name="login" id="login" placeholder="Login">
+                        <input type="email" name="login" id="login" placeholder="Email">
                         <i class="fa-solid fa-envelope"></i>
                     </label>
                     <label for="password" class="input-account">

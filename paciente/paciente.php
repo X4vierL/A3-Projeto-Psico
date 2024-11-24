@@ -105,37 +105,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <h1 id="title">Cadastro de Paciente</h1>
     <form action="#" method="POST" class="form">
         <div class="content-input">
+            <div class="couple">
+                <div class="one">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
-
+            </div>
+            <div class="one">
             <label for="genero">Gênero:</label>
             <input type="text" id="genero" name="genero" maxlength="5" required>
-
+            </div>
+            </div>
+            <div class="couple">
+                <div class="one">
             <label for="data_nascimento">Data de Nascimento:</label>
             <input type="date" id="data_nascimento" name="data_nascimento" required>
-
+            </div>
+            <div class="one">
             <label for="contato">Contato:</label>
             <input type="text" id="contato" name="contato" maxlength="15" required>
-
+            </div>
+            </div>
+            <div class="couple">
+                <div class="one">
             <label for="contato_emergencia">Contato de Emergência:</label>
             <input type="text" id="contato_emergencia" name="contato_emergencia" maxlength="15" required>
-
+            </div>
+            <div class="one">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" maxlength="50" required>
-
+            </div>
+            </div>
+            <div class="couple">
+            <div class="one">
             <label for="endereco">Endereço:</label>
             <input type="text" id="endereco" name="endereco" maxlength="100" required>
-
+            </div>
+            <div class="one">
             <label for="escolaridade">Escolaridade:</label>
             <input type="text" id="escolaridade" name="escolaridade" maxlength="20" required>
-
+            </div>
+            </div>
+            <div class="couple">
+                <div class="one">
             <label for="ocupacao">Ocupação:</label>
             <input type="text" id="ocupacao" name="ocupacao" maxlength="25" required>
-
+            </div>
+            <div class="one">
             <label for="necessidade_especial">Necessidade Especial:</label>
             <input type="text" id="necessidade_especial" name="necessidade_especial" maxlength="9">
+            </div>
+            </div>
 
-            <label for="estagiario_responsavel">Nome do estagiário responsável:</label>
+
+            <label for="estagiario_responsavel">Estagiário responsável:</label>
             <input 
                 type="text" 
                 id="estagiario_responsavel" 
@@ -144,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 required>
             <div id="suggestions_estagiario"></div>
 
-            <label for="orientador_responsavel">Nome do orientador responsável:</label>
+            <label for="orientador_responsavel">Orientador responsável:</label>
             <input 
                 type="text" 
                 id="orientador_responsavel" 

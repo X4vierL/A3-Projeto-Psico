@@ -30,7 +30,12 @@ mysqli_close($con);
 <head>
     <meta charset="UTF-8">
     <title>Prontuário</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+     
 </head>
 <body>
     <div class="content-box">
@@ -50,7 +55,7 @@ mysqli_close($con);
                 <input type="hidden" name="id_prontuario" value="<?php echo htmlspecialchars($prontuario['id_prontuario']); ?>">
             <?php endif; ?>
 
-            <div class="one">
+            <div class="one first">
                 <label>Paciente:</label>
                 <select name="id_paciente" required <?php echo $id_paciente ? 'readonly' : ''; ?>>
                     <?php if ($id_paciente && !$prontuario): ?>
@@ -74,13 +79,13 @@ mysqli_close($con);
             </div>
 
             <div class="couple">
-                <div class="one">
+                <div>
                     <label>Data de Abertura:</label>
                     <input type="date" name="data_abertura" 
                            value="<?php echo htmlspecialchars($prontuario['data_abertura'] ?? ''); ?>" 
                            required>
                 </div>
-                <div class="one">
+                <div>
                     <label>Data de Início dos Atendimentos:</label>
                     <input type="date" name="data_inicio_atendimentos" 
                            value="<?php echo htmlspecialchars($prontuario['data_inicio_atendimentos'] ?? ''); ?>" 
@@ -89,14 +94,14 @@ mysqli_close($con);
             </div>
             <div class="one">
                 <label>Histórico Familiar:</label>
-                <textarea name="historico_familiar" rows="3"><?php echo htmlspecialchars($prontuario['historico_familiar'] ?? ''); ?></textarea>
+                <textarea name="historico_familiar"><?php echo htmlspecialchars($prontuario['historico_familiar'] ?? ''); ?></textarea>
             </div>
             <div class="one">
                 <label>Histórico Social:</label>
                 <textarea name="historico_social" rows="3"><?php echo htmlspecialchars($prontuario['historico_social'] ?? ''); ?></textarea>
             </div>
             <div class="one">
-                <label>Considerações Finais:</label>
+                <label>Conclusão:</label>
                 <textarea name="consideracoes_finais" rows="3"><?php echo htmlspecialchars($prontuario['consideracoes_finais'] ?? ''); ?></textarea>
             </div>
             <div class="one">

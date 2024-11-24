@@ -37,8 +37,8 @@
             if ($result && mysqli_num_rows($result) > 0) {
                 while ($paciente = mysqli_fetch_assoc($result)) {
                     echo '<li class="paciente-item">';
-                    echo '<span>' . htmlspecialchars($paciente['nome']) . '</span>';
-                    echo '<a href="../sessoes_lst/sessoes_lst.php?id_paciente=' . urlencode($paciente['id_paciente']) . '" class="paciente-link"><span>Sessões: ' . htmlspecialchars($paciente['total_sessoes']) . '</span></a>';
+                    echo '<span>' . htmlspecialchars($paciente['nome']) . ': </span>';
+                    // echo '<a href="../sessoes_lst/sessoes_lst.php?id_paciente=' . urlencode($paciente['id_paciente']) . '" class="paciente-link"><span>Sessões: ' . htmlspecialchars($paciente['total_sessoes']) . '</span></a>';
                     echo '<a href="../prontuario/prontuario.php?id_paciente=' . urlencode($paciente['id_paciente']) . '" class="paciente-link">Ver Prontuário</a>';
                     echo '</li>';
                 }
