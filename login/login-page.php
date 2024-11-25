@@ -38,12 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($button === 'Entrar') {
-        if (empty($user) || empty($password)) {
+        if (empty($login) || empty($password)) {
             echo "<script>alert('Usuário e senha são obrigatórios!');</script>";
         } else {
             $login_query = "SELECT * FROM usuario WHERE login = ?";
             $stmt = $con->prepare($login_query);
-            $stmt->bind_param("s", $user);
+            $stmt->bind_param("s", $login);
             $stmt->execute();
             $result = $stmt->get_result();
 

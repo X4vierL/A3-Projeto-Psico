@@ -5,6 +5,7 @@ include('../verify.php');
 $id_paciente = null;
 $prontuario = null;
 $pacientes = [];
+$pacientes_sem_prontuario = [];
 
 if (isset($_GET['id_paciente']) && !empty($_GET['id_paciente'])) {
     $id_paciente = intval($_GET['id_paciente']);
@@ -23,6 +24,26 @@ while ($row = mysqli_fetch_assoc($result_pacientes)) {
     $pacientes[] = $row;
 }
 
+$query_pacientes_sem_prontuario = "
+    SELECT p.id_paciente, p.nome 
+    FROM paciente p 
+    LEFT JOIN prontuario pr ON p.id_paciente = pr.id_paciente 
+    WHERE pr.id_paciente IS NULL";
+$result_pacientes_sem_prontuario = mysqli_query($con, $query_pacientes_sem_prontuario);
+while ($row = mysqli_fetch_assoc($result_pacientes_sem_prontuario)) {
+    $pacientes_sem_prontuario[] = $row;
+}
+
+$nome_paciente = "Paciente não encontrado";
+if ($id_paciente) {
+    foreach ($pacientes as $paciente) {
+        if ($paciente['id_paciente'] == $id_paciente) {
+            $nome_paciente = $paciente['nome'];
+            break;
+        }
+    }
+}
+
 mysqli_close($con);
 ?>
 <!DOCTYPE html>
@@ -35,14 +56,13 @@ mysqli_close($con);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-     
 </head>
 <body>
     <div class="content-box">
         <h2 id="title">
             <?php
             if ($id_paciente && $prontuario) {
-                echo "Editar Prontuário - Paciente: " . htmlspecialchars($prontuario['id_paciente']);
+                echo "Editar Prontuário - Paciente: " . htmlspecialchars($nome_paciente);
             } elseif ($id_paciente) {
                 echo "Cadastrar Prontuário - Paciente Selecionado";
             } else {
@@ -51,32 +71,25 @@ mysqli_close($con);
             ?>
         </h2>
         <form action="salvar_prontuario.php" method="POST" class="form">
-            <?php if ($prontuario): ?>
-                <input type="hidden" name="id_prontuario" value="<?php echo htmlspecialchars($prontuario['id_prontuario']); ?>">
-            <?php endif; ?>
-
-            <div class="one first">
-                <label>Paciente:</label>
-                <select name="id_paciente" required <?php echo $id_paciente ? 'readonly' : ''; ?>>
-                    <?php if ($id_paciente && !$prontuario): ?>
-                        <?php foreach ($pacientes as $paciente): ?>
-                            <?php if ($paciente['id_paciente'] == $id_paciente): ?>
-                                <option value="<?php echo $paciente['id_paciente']; ?>" selected>
-                                    <?php echo htmlspecialchars($paciente['nome']); ?>
-                                </option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+            <?php if ($id_paciente): ?>
+                <div class="one first">
+                    <label>Paciente:</label>
+                    <input type="text" value="<?php echo htmlspecialchars($nome_paciente); ?>" disabled>
+                    <input type="hidden" name="id_paciente" value="<?php echo htmlspecialchars($id_paciente); ?>">
+                </div>
+            <?php else: ?>
+                <div class="one first">
+                    <label>Paciente:</label>
+                    <select name="id_paciente" required>
                         <option value="">Selecione um paciente</option>
-                        <?php foreach ($pacientes as $paciente): ?>
-                            <option value="<?php echo $paciente['id_paciente']; ?>" 
-                                <?php echo ($id_paciente && $paciente['id_paciente'] == $id_paciente) ? 'selected' : ''; ?>>
+                        <?php foreach ($pacientes_sem_prontuario as $paciente): ?>
+                            <option value="<?php echo htmlspecialchars($paciente['id_paciente']); ?>">
                                 <?php echo htmlspecialchars($paciente['nome']); ?>
                             </option>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
-            </div>
+                    </select>
+                </div>
+            <?php endif; ?>
 
             <div class="couple">
                 <div>
