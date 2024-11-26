@@ -1,0 +1,90 @@
+/* Reset e padrão */
+* {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-image: url(img/background.jpg);
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+/* Caixa principal */
+.content-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 1000px;
+}
+
+.content-box h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #0ea4b2;
+}
+
+/* Estilização da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #0ea4b2;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: rgba(14, 164, 178, 0.1);
+}
+
+/* Parágrafo de mensagem */
+.content-box p {
+    text-align: center;
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Botões */
+.actions {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.actions .btn {
+    display: inline-block;
+    background-color: #0ea4b2;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    transition: 0.3s ease-in-out;
+}
+
+.actions .btn:hover {
+    background-color: #08697e;
+    color: #fff;
+}

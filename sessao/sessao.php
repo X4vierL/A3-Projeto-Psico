@@ -49,7 +49,7 @@ mysqli_close($con);
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Sessão</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="content-box">
