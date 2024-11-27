@@ -15,24 +15,55 @@
     <div class="content-list">
         <h1 id="title">Pacientes</h1>
         <ul class="paciente-lista">
-<?php
+            <?php
             include('../config.php');
             include('../verify.php');
-            $query = "
-                SELECT 
-                    p.id_paciente, 
-                    p.nome, 
-                    p.contato, 
-                    COUNT(s.id_sessao) AS total_sessoes
-                FROM 
-                    paciente p
-                LEFT JOIN 
-                    sessao s ON s.id_paciente = p.id_paciente
-                GROUP BY 
-                    p.id_paciente
-                ";
 
-            $result = mysqli_query($con, $query);
+            if (!isset($_SESSION['id_usuario'])) {
+                die("Erro: Usuário não autenticado.");
+            }
+            $id_usuario = $_SESSION['id_usuario'];
+            $nivel_usuario = $_SESSION["nivel_usuario"];
+            
+            if ($nivel_usuario === "ADM") {
+                $query = "
+                    SELECT 
+                        p.id_paciente, 
+                        p.nome, 
+                        p.contato, 
+                        COUNT(s.id_sessao) AS total_sessoes
+                    FROM 
+                        paciente p
+                    LEFT JOIN 
+                        sessao s ON s.id_paciente = p.id_paciente
+                    GROUP BY 
+                        p.id_paciente
+                ";
+            
+                $result = mysqli_query($con, $query);
+            
+            } else {
+                $query = "
+                    SELECT 
+                        p.id_paciente, 
+                        p.nome, 
+                        p.contato, 
+                        COUNT(s.id_sessao) AS total_sessoes
+                    FROM 
+                        paciente p
+                    LEFT JOIN 
+                        sessao s ON s.id_paciente = p.id_paciente
+                    WHERE 
+                        p.estagiario_responsavel = ?
+                    GROUP BY 
+                        p.id_paciente
+                ";
+            
+                $stmt = mysqli_prepare($con, $query);
+                mysqli_stmt_bind_param($stmt, 'i', $id_usuario);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+            }
 
             if ($result && mysqli_num_rows($result) > 0) {
                 while ($paciente = mysqli_fetch_assoc($result)) {

@@ -111,9 +111,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" id="nome" name="nome" required>
             </div>
             <div class="one">
-            <label for="genero">Gênero:</label>
-            <input type="text" id="genero" name="genero" maxlength="5" required>
-            </div>
+    <label for="genero">Gênero:</label>
+    <div id="genero">
+        <label>
+            <input type="radio" name="genero" value="m" required>
+            Masculino
+        </label>
+        <label>
+            <input type="radio" name="genero" value="f" required>
+            Feminino
+        </label>
+        <label>
+            <input type="radio" name="genero" value="outro" required>
+            Outro
+        </label>
+    </div>
+</div>
+
             </div>
             <div class="couple">
                 <div class="one">

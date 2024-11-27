@@ -69,9 +69,9 @@ mysqli_close($con);
         <?php else: ?>
             <p>Este paciente não possui sessões registradas.</p>
         <?php endif; ?>
-    </div>
-    <div class="actions">
-        <a href="../sessao/sessao.php?id_paciente=<?= $id_paciente ?>" class="btn">Cadastrar Nova Sessão</a>
+        <div class="actions">
+            <a href="../sessao/sessao.php?id_paciente=<?= $id_paciente ?>" class="btn">Cadastrar Nova Sessão</a>
+        </div>
     </div>
 </body>
 </html>

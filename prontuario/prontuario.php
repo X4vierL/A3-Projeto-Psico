@@ -7,29 +7,30 @@ $prontuario = null;
 $pacientes = [];
 $pacientes_sem_prontuario = [];
 
-if (isset($_GET['id_paciente']) && !empty($_GET['id_paciente'])) {
-    $id_paciente = intval($_GET['id_paciente']);
+$id_usuario = $_SESSION['id_usuario'];
+$nivel_usuario = $_SESSION['nivel_usuario'];
 
-    $query_prontuario = "SELECT * FROM prontuario WHERE id_paciente = ?";
-    $stmt_prontuario = mysqli_prepare($con, $query_prontuario);
-    mysqli_stmt_bind_param($stmt_prontuario, 'i', $id_paciente);
-    mysqli_stmt_execute($stmt_prontuario);
-    $result_prontuario = mysqli_stmt_get_result($stmt_prontuario);
-    $prontuario = mysqli_fetch_assoc($result_prontuario);
+if ($nivel_usuario === 'ADM') {
+    $query_pacientes_sem_prontuario = "
+        SELECT p.id_paciente, p.nome 
+        FROM paciente p 
+        LEFT JOIN prontuario pr ON p.id_paciente = pr.id_paciente 
+        WHERE pr.id_paciente IS NULL
+    ";
+    $result_pacientes_sem_prontuario = mysqli_query($con, $query_pacientes_sem_prontuario);
+} else {
+    $query_pacientes_sem_prontuario = "
+        SELECT p.id_paciente, p.nome 
+        FROM paciente p 
+        LEFT JOIN prontuario pr ON p.id_paciente = pr.id_paciente 
+        WHERE pr.id_paciente IS NULL AND p.estagiario_responsavel = ?
+    ";
+    $stmt_pacientes_sem_prontuario = mysqli_prepare($con, $query_pacientes_sem_prontuario);
+    mysqli_stmt_bind_param($stmt_pacientes_sem_prontuario, 'i', $id_usuario);
+    mysqli_stmt_execute($stmt_pacientes_sem_prontuario);
+    $result_pacientes_sem_prontuario = mysqli_stmt_get_result($stmt_pacientes_sem_prontuario);
 }
 
-$query_pacientes = "SELECT id_paciente, nome FROM paciente";
-$result_pacientes = mysqli_query($con, $query_pacientes);
-while ($row = mysqli_fetch_assoc($result_pacientes)) {
-    $pacientes[] = $row;
-}
-
-$query_pacientes_sem_prontuario = "
-    SELECT p.id_paciente, p.nome 
-    FROM paciente p 
-    LEFT JOIN prontuario pr ON p.id_paciente = pr.id_paciente 
-    WHERE pr.id_paciente IS NULL";
-$result_pacientes_sem_prontuario = mysqli_query($con, $query_pacientes_sem_prontuario);
 while ($row = mysqli_fetch_assoc($result_pacientes_sem_prontuario)) {
     $pacientes_sem_prontuario[] = $row;
 }
