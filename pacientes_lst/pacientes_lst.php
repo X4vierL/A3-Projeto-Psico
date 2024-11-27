@@ -81,7 +81,14 @@
             ?>
         </ul>
         <button onclick="window.location.href='../paciente/paciente.php'" class="button-cadastrar">Cadastrar Novo Paciente</button>
+        <div class="back-button">
+    <a href="http://localhost/A3-Projeto-Psico/main/main.php">
+        <button type="button">Voltar</button>
+    </a>
+</div>
     </div>
+
+
 
 </body>
 </html>

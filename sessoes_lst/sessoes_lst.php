@@ -72,6 +72,11 @@ mysqli_close($con);
         <div class="actions">
             <a href="../sessao/sessao.php?id_paciente=<?= $id_paciente ?>" class="btn">Cadastrar Nova Sessão</a>
         </div>
+        <div class="back-button">
+    <a href="http://localhost/A3-Projeto-Psico/pacientes_lst/pacientes_lst.php">
+        <button type="button">Voltar</button>
+    </a>
+</div>
     </div>
 </body>
 </html>

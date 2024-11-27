@@ -101,3 +101,25 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #08697e;
 }
+/* Estilo para o botão de Voltar */
+.back-button {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .back-button button {
+    background-color: #f44336;  /* Cor de fundo vermelha */
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .back-button button:hover {
+    background-color: #d32f2f;  /* Cor vermelha mais escura quando hover */
+    transform: scale(1.05);  /* Efeito de aumento ao passar o mouse */
+  }
+  

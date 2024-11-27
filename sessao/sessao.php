@@ -83,6 +83,11 @@ mysqli_close($con);
             <div class="form-group">
                 <input type="submit" value="Salvar Sessão">
             </div>
+            <div class="back-button">
+    <a href="http://localhost/A3-Projeto-Psico/pacientes_lst/pacientes_lst.php">
+        <button type="button">Voltar</button>
+    </a>
+</div>
         </form>
     </div>
 </body>
