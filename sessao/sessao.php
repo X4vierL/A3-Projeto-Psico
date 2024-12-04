@@ -70,7 +70,7 @@ mysqli_close($con);
             </div>
             <div class="form-group">
                 <label>Número da Sessão:</label>
-                <input type="text" value="<?= isset($numero_sessao) ? $numero_sessao : 1 ?>" readonly>
+                <input type="text" value="<?= isset($numero_sessao) ? $numero_sessao : "1" ?>" readonly>
             </div>
             <div class="form-group">
                 <label>Descrição das Atividades:</label>

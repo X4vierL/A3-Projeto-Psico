@@ -136,13 +136,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="one">
             <label for="contato">Contato:</label>
-            <input type="text" id="contato" name="contato" maxlength="15" required>
+            <input type="number" id="contato" name="contato" maxlength="15" required>
             </div>
             </div>
             <div class="couple">
                 <div class="one">
             <label for="contato_emergencia">Contato de Emergência:</label>
-            <input type="text" id="contato_emergencia" name="contato_emergencia" maxlength="15" required>
+            <input type="number" id="contato_emergencia" name="contato_emergencia" maxlength="15" min="0"required>
             </div>
             <div class="one">
             <label for="email">Email:</label>
