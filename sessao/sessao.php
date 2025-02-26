@@ -84,7 +84,7 @@ mysqli_close($con);
                 <input type="submit" value="Salvar Sessão">
             </div>
             <div class="back-button">
-    <a href="http://localhost/A3-Projeto-Psico/pacientes_lst/pacientes_lst.php">
+    <a href="http://localhost/A3-Projeto-Psico/sessoes_lst/sessoes_lst.php?id_paciente=<?= $id_paciente ?>">
         <button type="button">Voltar</button>
     </a>
 </div>

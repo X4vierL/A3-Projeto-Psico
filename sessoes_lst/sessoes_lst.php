@@ -47,9 +47,8 @@ mysqli_close($con);
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ID Sessão</th>
-                        <th>Data da Sessão</th>
                         <th>Número da Sessão</th>
+                        <th>Data da Sessão</th>
                         <th>Descrição das Atividades</th>
                         <th>Observação</th>
                     </tr>
@@ -57,9 +56,8 @@ mysqli_close($con);
                 <tbody>
                     <?php foreach ($sessoes as $sessao): ?>
                         <tr>
-                            <td><?= htmlspecialchars($sessao['id_sessao']) ?></td>
-                            <td><?= htmlspecialchars($sessao['data_sessao']) ?></td>
                             <td><?= htmlspecialchars($sessao['numero_sessao']) ?></td>
+                            <td><?= htmlspecialchars($sessao['data_sessao']) ?></td>
                             <td><?= htmlspecialchars($sessao['descricao_atividades']) ?></td>
                             <td><?= htmlspecialchars($sessao['observacao']) ?></td>
                         </tr>
